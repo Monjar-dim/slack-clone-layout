@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, Bot, Minimize2, Maximize2 } from 'lucide-react';
+import { Bot, X, Send, Minimize2, Maximize2 } from 'lucide-react';
 
 interface Message {
   id: number;
@@ -241,7 +241,7 @@ const ChatWidget = () => {
           onClick={() => setIsOpen(true)}
           className="bg-primary hover:bg-primary/90 text-primary-foreground p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 group"
         >
-          <MessageCircle size={24} />
+          <Bot size={24} />
           <div className="absolute -top-12 right-0 bg-popover text-popover-foreground px-3 py-1 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md border">
             Need help? Ask me anything!
           </div>
@@ -338,7 +338,7 @@ const ChatWidget = () => {
                     <button
                       key={index}
                       onClick={() => handleQuickQuestion(question)}
-                      className="w-full text-left text-xs bg-muted/50 hover:bg-accent text-muted-foreground hover:text-accent-foreground p-2 rounded transition-colors"
+                      className="w-full text-left text-xs bg-muted/80 hover:bg-accent text-muted-foreground hover:text-accent-foreground p-2 rounded transition-colors"
                     >
                       {question}
                     </button>
