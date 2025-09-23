@@ -12,6 +12,7 @@ interface Message {
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [isOverPurple, setIsOverPurple] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -23,6 +24,45 @@ const ChatWidget = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // Check if chat widget is over purple sections
+  useEffect(() => {
+    const checkPurpleBackground = () => {
+      const widget = document.querySelector('.chat-widget-button');
+      if (widget) {
+        const rect = widget.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        // Get element behind the widget
+        const elementBelow = document.elementFromPoint(centerX, centerY);
+        if (elementBelow) {
+          const computedStyle = window.getComputedStyle(elementBelow);
+          const bgColor = computedStyle.backgroundColor;
+          
+          // Check if background is purple-ish (rough detection)
+          const isPurple = bgColor.includes('76, 29, 149') || // primary purple
+                          !!elementBelow.closest('.bg-primary') ||
+                          !!elementBelow.closest('[class*="purple"]') ||
+                          (computedStyle.getPropertyValue('--tw-bg-opacity') && 
+                          computedStyle.backgroundColor.includes('purple'));
+          
+          setIsOverPurple(isPurple);
+        }
+      }
+    };
+
+    const handleScroll = () => {
+      checkPurpleBackground();
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    checkPurpleBackground(); // Initial check
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const faqData = [
     {
@@ -239,9 +279,13 @@ const ChatWidget = () => {
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 group"
+          className={`chat-widget-button p-4 rounded-full shadow-lg transition-all duration-500 hover:scale-110 group ${
+            isOverPurple 
+              ? 'bg-background hover:bg-background/90 text-foreground border-2 border-accent' 
+              : 'bg-primary hover:bg-primary/90 text-primary-foreground'
+          }`}
         >
-          <Bot size={24} />
+          <Bot size={24} className={`transition-colors duration-500 ${isOverPurple ? 'text-accent' : ''}`} />
           <div className="absolute -top-12 right-0 bg-popover text-popover-foreground px-3 py-1 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md border">
             Need help? Ask me anything!
           </div>
@@ -338,7 +382,7 @@ const ChatWidget = () => {
                     <button
                       key={index}
                       onClick={() => handleQuickQuestion(question)}
-                      className="w-full text-left text-xs bg-muted/80 hover:bg-accent text-muted-foreground hover:text-accent-foreground p-2 rounded transition-colors"
+                      className="w-full text-left text-xs bg-muted hover:bg-accent text-muted-foreground hover:text-accent-foreground p-2 rounded transition-colors"
                     >
                       {question}
                     </button>

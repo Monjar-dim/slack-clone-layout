@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Phone, MessageSquare, Users, Clock, CheckCircle, X, Star, ArrowRight } from 'lucide-react';
+import uberLogo from '@/assets/uber-logo.png';
+import airbnbLogo from '@/assets/airbnb-logo.png';
+import nasaLogo from '@/assets/nasa-logo.png';
+import ibmLogo from '@/assets/ibm-logo.png';
 
 const SalesSection = () => {
   const [isCalLoaded, setIsCalLoaded] = useState(false);
@@ -198,21 +202,21 @@ const SalesSection = () => {
         <div className="max-w-6xl mx-auto px-6">
           <p className="text-center text-muted-foreground mb-8">Trusted by industry leaders worldwide</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-muted-foreground/60">Uber</div>
-              <p className="text-xs text-muted-foreground/60 mt-1">Ride-sharing</p>
+            <div className="text-center flex flex-col items-center">
+              <img src={uberLogo} alt="Uber" className="h-12 w-auto mb-2 opacity-60 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-300" />
+              <p className="text-xs text-muted-foreground/60">Ride-sharing</p>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-muted-foreground/60">Airbnb</div>
-              <p className="text-xs text-muted-foreground/60 mt-1">Hospitality</p>
+            <div className="text-center flex flex-col items-center">
+              <img src={airbnbLogo} alt="Airbnb" className="h-12 w-auto mb-2 opacity-60 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-300" />
+              <p className="text-xs text-muted-foreground/60">Hospitality</p>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-muted-foreground/60">NASA</div>
-              <p className="text-xs text-muted-foreground/60 mt-1">Aerospace</p>
+            <div className="text-center flex flex-col items-center">
+              <img src={nasaLogo} alt="NASA" className="h-12 w-auto mb-2 opacity-60 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-300" />
+              <p className="text-xs text-muted-foreground/60">Aerospace</p>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-muted-foreground/60">IBM</div>
-              <p className="text-xs text-muted-foreground/60 mt-1">Technology</p>
+            <div className="text-center flex flex-col items-center">
+              <img src={ibmLogo} alt="IBM" className="h-12 w-auto mb-2 opacity-60 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-300" />
+              <p className="text-xs text-muted-foreground/60">Technology</p>
             </div>
           </div>
         </div>
