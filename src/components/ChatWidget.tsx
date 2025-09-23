@@ -279,13 +279,13 @@ const ChatWidget = () => {
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => setIsOpen(true)}
-          className={`chat-widget-button p-4 rounded-full shadow-lg transition-all duration-500 hover:scale-110 group ${
+          className={`chat-widget-button p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 group ${
             isOverPurple 
               ? 'bg-background hover:bg-background/90 text-foreground border-2 border-accent' 
               : 'bg-primary hover:bg-primary/90 text-primary-foreground'
           }`}
         >
-          <Bot size={24} className={`transition-colors duration-500 ${isOverPurple ? 'text-accent' : ''}`} />
+          <Bot size={24} className={isOverPurple ? 'text-accent' : ''} />
           <div className="absolute -top-12 right-0 bg-popover text-popover-foreground px-3 py-1 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md border">
             Need help? Ask me anything!
           </div>
