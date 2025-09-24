@@ -107,3 +107,32 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* Cal.com embed styling to match website theme */
+@layer components {
+  /* Cal.com modal styling */
+  .cal-embed-modal {
+    --cal-brand-color: hsl(278, 85%, 18%) !important;
+    --cal-brand-text-color: hsl(0, 0%, 100%) !important;
+    --cal-bg: hsl(0, 0%, 100%) !important;
+    --cal-bg-subtle: hsl(210, 17%, 98%) !important;
+    --cal-text: hsl(210, 10%, 18%) !important;
+    --cal-text-subtle: hsl(215, 16%, 47%) !important;
+    --cal-border: hsl(214, 32%, 91%) !important;
+    --cal-border-subtle: hsl(214, 32%, 91%) !important;
+    --cal-accent: hsl(0, 76%, 57%) !important;
+    --cal-accent-text: hsl(0, 0%, 100%) !important;
+  }
+
+  /* Override Cal.com default styles */
+  iframe[src*="cal.com"] {
+    border-radius: 12px !important;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25) !important;
+  }
+
+  /* Cal.com button styling in modal */
+  [data-cal-namespace] {
+    --cal-brand-color: hsl(278, 85%, 18%);
+    --cal-brand-text-color: hsl(0, 0%, 100%);
+  }
+}

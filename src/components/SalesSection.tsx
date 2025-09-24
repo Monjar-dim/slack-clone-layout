@@ -15,7 +15,16 @@ const SalesSection = () => {
         // Dynamically import Cal.com embed
         const { getCalApi } = await import('@calcom/embed-react');
         const cal = await getCalApi({"namespace":"demo-call"});
-        cal("ui", {"hideEventTypeDetails":false,"layout":"month_view"});
+        cal("ui", {
+          "hideEventTypeDetails": false,
+          "layout": "month_view",
+          "theme": "light",
+          "styles": {
+            "branding": {
+              "brandColor": "#4c1d95"
+            }
+          }
+        });
         setIsCalLoaded(true);
       } catch (error) {
         console.log('Cal.com embed not available, using fallback');
