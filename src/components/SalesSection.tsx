@@ -199,7 +199,12 @@ const SalesSection = () => {
               <Calendar size={20} />
               Book Demo
             </button>
-            <button className="border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300">
+            <button 
+              className="border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300"
+              data-cal-namespace="demo-call"
+              data-cal-link="monjardino/demo-call"
+              data-cal-config='{"layout":"month_view"}'
+            >
               Start Free Trial
             </button>
           </div>

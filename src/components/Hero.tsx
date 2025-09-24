@@ -16,6 +16,9 @@ const Hero = () => {
           <Button 
             size="lg"
             className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-4 text-lg transition-all duration-200 hover:shadow-lg hover:scale-105"
+            data-cal-namespace="demo-call"
+            data-cal-link="monjardino/demo-call"
+            data-cal-config='{"layout":"month_view"}'
           >
             Start your million-dollar journey
           </Button>
@@ -23,6 +26,9 @@ const Hero = () => {
             size="lg"
             variant="outline"
             className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground hover:text-primary font-semibold px-8 py-4 text-lg transition-all duration-200 bg-transparent"
+            data-cal-namespace="demo-call"
+            data-cal-link="monjardino/demo-call"
+            data-cal-config='{"layout":"month_view"}'
           >
             Watch demo
           </Button>
