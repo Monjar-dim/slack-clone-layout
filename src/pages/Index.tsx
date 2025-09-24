@@ -4,7 +4,7 @@ import Features from "@/components/Features";
 import Stats from "@/components/Stats";
 import SalesSection from "@/components/SalesSection";
 import Footer from "@/components/Footer";
-import ChatWidget from "@/components/ChatWidget";
+import RetellWidget from "@/components/RetellWidget";
 
 const Index = () => {
   return (
@@ -17,7 +17,7 @@ const Index = () => {
         <SalesSection />
       </main>
       <Footer />
-      <ChatWidget />
+      <RetellWidget />
     </div>
   );
 };
