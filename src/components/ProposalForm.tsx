@@ -37,8 +37,9 @@ const proposalFormSchema = z.object({
 type ProposalFormData = z.infer<typeof proposalFormSchema>;
 
 const ProposalForm = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<ProposalFormData>({
@@ -62,65 +63,61 @@ const ProposalForm = () => {
     }
   });
 
-  const onSubmit = async (data: ProposalFormData) => {
-    setIsSubmitting(true);
+  const onSubmit = async (formData: ProposalFormData) => {
+    setIsLoading(true);
+    setError('');
     
-    try {
-      // Webhook configuration
-      const webhookURL = "https://public.lindy.ai/api/v1/webhooks/lindy/dbb535c2-976e-4aa5-844a-b68ec531c824";
-      
-      // Format data for Lindy AI (flattened structure)
-      const payload = {
-        timestamp: new Date().toISOString(),
-        company_name: data.company_name,
-        industry: data.industry,
-        employee_count: data.employee_count,
-        website: data.website || '',
-        contact_name: data.contact_name,
-        contact_email: data.contact_email,
-        contact_phone: data.contact_phone || '',
-        job_title: data.job_title,
-        current_tools: data.current_tools || [],
-        main_challenges: data.main_challenges || [],
-        integrations_needed: data.integrations_needed || [],
-        security_requirements: data.security_requirements || [],
-        budget_range: data.budget_range,
-        timeline: data.timeline,
-        additional_comments: data.additional_comments || ''
-      };
+    const webhookURL = "https://public.lindy.ai/api/v1/webhooks/lindy/dbb535c2-976e-4aa5-844a-b68ec531c824";
+    
+    // Format data exactly as expected
+    const payload = {
+      timestamp: new Date().toISOString(),
+      company_name: formData.company_name,
+      industry: formData.industry,
+      employee_count: formData.employee_count,
+      website: formData.website || '',
+      contact_name: formData.contact_name,
+      contact_email: formData.contact_email,
+      contact_phone: formData.contact_phone || '',
+      job_title: formData.job_title,
+      current_tools: formData.current_tools || [],
+      main_challenges: formData.main_challenges || [],
+      integrations_needed: formData.integrations_needed || [],
+      security_requirements: formData.security_requirements || [],
+      budget_range: formData.budget_range,
+      timeline: formData.timeline,
+      additional_comments: formData.additional_comments || ''
+    };
 
+    try {
       const response = await fetch(webhookURL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Source': 'slack-landing-page'
+          'Accept': 'application/json'
         },
         body: JSON.stringify(payload)
       });
 
-      if (response.ok) {
-        setIsSubmitted(true);
-        console.log('Proposal request sent to Lindy AI successfully');
-        toast({
-          title: "Proposal Request Submitted!",
-          description: "Our AI system is generating your personalized proposal. Check your email within 24 hours.",
-        });
+      console.log('Submission response:', response.status);
+      
+      // Consider it successful if we get any response (webhook received it)
+      if (response.status >= 200 && response.status < 400) {
+        setIsLoading(false);
+        setShowSuccess(true);
+        // Reset form
+        form.reset();
       } else {
         throw new Error(`HTTP ${response.status}`);
       }
     } catch (error) {
-      console.error('Webhook submission error:', error);
-      toast({
-        title: "Submission Failed",
-        description: "Failed to submit proposal request. Please try again or contact sales@slack.com",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
+      console.error('Form submission error:', error);
+      setIsLoading(false);
+      setError('Unable to submit request. Please try again or contact sales@slack.com');
     }
   };
 
-  if (isSubmitted) {
+  if (showSuccess) {
     return (
       <section className="relative py-24 bg-gradient-to-br from-primary/5 via-secondary to-background">
         <div className="container max-w-4xl mx-auto px-6">
@@ -596,15 +593,22 @@ const ProposalForm = () => {
                 />
               </div>
 
+              {/* Error Message */}
+              {error && (
+                <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 text-center">
+                  <p className="text-destructive">{error}</p>
+                </div>
+              )}
+
               {/* Submit Button */}
               <div className="text-center pt-8">
                 <Button 
                   type="submit" 
                   size="lg"
-                  disabled={isSubmitting}
+                  disabled={isLoading}
                   className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-3 text-lg font-semibold"
                 >
-                  {isSubmitting ? (
+                  {isLoading ? (
                     <>
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                       Submitting...
