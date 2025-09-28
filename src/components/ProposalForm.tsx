@@ -66,47 +66,53 @@ const ProposalForm = () => {
     setIsSubmitting(true);
     
     try {
-      // Prepare structured data for webhook
-      const formData = {
+      // Webhook configuration
+      const webhookURL = "https://public.lindy.ai/api/v1/webhooks/lindy/dbb535c2-976e-4aa5-844a-b68ec531c824";
+      
+      // Format data for Lindy AI (flattened structure)
+      const payload = {
         timestamp: new Date().toISOString(),
-        company: {
-          name: data.company_name,
-          industry: data.industry,
-          employee_count: data.employee_count,
-          website: data.website
-        },
-        contact: {
-          name: data.contact_name,
-          email: data.contact_email,
-          phone: data.contact_phone,
-          job_title: data.job_title
-        },
-        requirements: {
-          current_tools: data.current_tools,
-          main_challenges: data.main_challenges,
-          integrations_needed: data.integrations_needed,
-          security_requirements: data.security_requirements,
-          budget_range: data.budget_range,
-          timeline: data.timeline,
-          additional_comments: data.additional_comments
-        }
+        company_name: data.company_name,
+        industry: data.industry,
+        employee_count: data.employee_count,
+        website: data.website || '',
+        contact_name: data.contact_name,
+        contact_email: data.contact_email,
+        contact_phone: data.contact_phone || '',
+        job_title: data.job_title,
+        current_tools: data.current_tools || [],
+        main_challenges: data.main_challenges || [],
+        integrations_needed: data.integrations_needed || [],
+        security_requirements: data.security_requirements || [],
+        budget_range: data.budget_range,
+        timeline: data.timeline,
+        additional_comments: data.additional_comments || ''
       };
 
-      // TODO: Replace with actual webhook endpoint
-      console.log("Form submission data:", formData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setIsSubmitted(true);
-      toast({
-        title: "Proposal Request Submitted!",
-        description: "We'll send your customized proposal within 24 hours.",
+      const response = await fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Source': 'slack-landing-page'
+        },
+        body: JSON.stringify(payload)
       });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        console.log('Proposal request sent to Lindy AI successfully');
+        toast({
+          title: "Proposal Request Submitted!",
+          description: "Our AI system is generating your personalized proposal. Check your email within 24 hours.",
+        });
+      } else {
+        throw new Error(`HTTP ${response.status}`);
+      }
     } catch (error) {
+      console.error('Webhook submission error:', error);
       toast({
         title: "Submission Failed",
-        description: "Please try again or contact our sales team directly.",
+        description: "Failed to submit proposal request. Please try again or contact sales@slack.com",
         variant: "destructive",
       });
     } finally {
