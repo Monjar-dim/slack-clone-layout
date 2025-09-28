@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Stats from "@/components/Stats";
 import SalesSection from "@/components/SalesSection";
+import ProposalForm from "@/components/ProposalForm";
 import Footer from "@/components/Footer";
 import RetellWidget from "@/components/RetellWidget";
 
@@ -15,6 +16,7 @@ const Index = () => {
         <Features />
         <Stats />
         <SalesSection />
+        <ProposalForm />
       </main>
       <Footer />
       <RetellWidget />
